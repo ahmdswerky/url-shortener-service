@@ -1,0 +1,109 @@
+version: '3.8'
+
+networks:
+  scalable_service_network:
+    driver: ${NETWORK_DRIVER:-bridge}
+    
+services:
+  haproxy:
+    image: haproxy:2.9
+    container_name: scalable-service-loadbalancer
+    ports:
+      - "${HAPROXY_PORT:-8101}:80"
+    volumes:
+      - ./docker/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    user: "1000:1000"
+    networks:
+      - scalable_service_network
+    depends_on:
+      - server1
+      - server2
+      - server3
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+
+  mongodb:
+    image: mongo:latest
+    container_name: scalable-service-mongodb
+    restart: always
+    ports:
+      - "27021:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_USER:-admin}
+    networks:
+      - scalable_service_network 
+
+  server1:
+    build:
+      context: ./src/backend
+      dockerfile: Dockerfile
+    container_name: scalable-service-server1
+    environment:
+      - NODE_ENV=development
+      - APP_NAME="Server 1"
+    env_file:
+      - .env
+    user: "1000:1000"
+    networks:
+      - scalable_service_network
+    volumes:
+      - ./src/backend:/app
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+  server2:
+    build:
+      context: ./src/backend
+      dockerfile: Dockerfile
+    container_name: scalable-service-server2
+    environment:
+      - NODE_ENV=development
+      - APP_NAME="Server 2"
+    env_file:
+      - .env
+    user: "1000:1000"
+    networks:
+      - scalable_service_network
+    volumes:
+      - ./src/backend:/app
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+  server3:
+    build:
+      context: ./src/backend
+      dockerfile: Dockerfile
+    container_name: scalable-service-server3
+    environment:
+      - NODE_ENV=development
+      - APP_NAME="Server 3"
+    env_file:
+      - .env
+    user: "1000:1000"
+    networks:
+      - scalable_service_network
+    volumes:
+      - ./src/backend:/app
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

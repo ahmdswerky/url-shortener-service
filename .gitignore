@@ -1,0 +1,14 @@
+node_modules
+dist
+build
+data
+.env
+bun.lock
+package-lock.json
+*.bak
+*.log
+*.log.*
+*.log.*.*
+*.log.*.*.*
+*.log.*.*.*.*
+*.log.*.*.*.*.*
