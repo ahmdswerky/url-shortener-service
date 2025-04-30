@@ -34,7 +34,7 @@ Since this service's system design requires much relations so we went with a NoS
 
 Using AI to discuss possible "bottlenecks" and explore ideas is a plus for Engineers, Here's a shared link including mine regarding the Architciture.
 
-[Scalable URL Shortener Architicture with AI](https://chatgpt.com/share/6811f36d-a290-8009-ab15-6cd1e80b3969)
+[Scalable URL Shortener Architicture with AI](https://chatgpt.com/share/6811f36d-a290-8009-ab15-6cd1e80b3969) <img src=".github/images/chatgpt.png" alt="drawing" width="18"/>
 
 ### Run Locally
 
