@@ -4,3 +4,8 @@ node_modules
 bun.lock
 npm-debug.log
 dist
+
+**/bin
+**/obj
+**/node_modules
+.git
